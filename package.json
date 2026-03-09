@@ -1,0 +1,22 @@
+{
+  "name": "mes-dashboard-backend-nodejs",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start:dev": "tsx  watch ./server.js",
+    "start:prod": "cross-env NODE_ENV=production node ./server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "cross-env": "^10.1.0",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "mongoose": "^9.2.4"
+  },
+  "devDependencies": {
+    "tsx": "^4.21.0"
+  }
+}

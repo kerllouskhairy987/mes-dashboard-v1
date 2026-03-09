@@ -1,0 +1,9 @@
+# global files
+node_modules
+info.txt
+
+# variable files
+config.env
+.env.local
+.env.*
+.env*
