@@ -1,4 +1,6 @@
 const asyncHandler = require("express-async-handler");
+const ApiError = require("../utils/apiError");
+const ApiFeatures = require("../utils/apiFeatures");
 
 /**
  * @desc    create new document
@@ -20,11 +22,24 @@ exports.createOne = (Model) =>
  */
 exports.getAll = (Model) =>
   asyncHandler(async (req, res) => {
-    const users = await Model.find();
+    // TODO: 4) Build Mongoose Query
+    const countDocuments = await Model.countDocuments();
+    const apiFeatures = new ApiFeatures(Model.find(), req.query)
+      .filter()
+      .search()
+      .paginate(countDocuments)
+      .sort()
+      .fields();
+
+    const { mongooseQuery, paginationResult } = apiFeatures;
+    const documents = await mongooseQuery;
+
     res.status(200).json({
       success: true,
-      message: "users fetched successfully",
-      data: users,
+      count: documents.length,
+      paginationResult,
+      lastId: documents[documents.length - 1]?._id,
+      data: documents,
     });
   });
 

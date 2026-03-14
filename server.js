@@ -9,12 +9,13 @@ const express = require("express");
 require("dotenv").config({ path: "./config.env" });
 
 const globalErrorHandling = require("./middleware/globalErrorHandling");
+const ApiError = require("./utils/apiError");
 
 // routes
 const userRoute = require("./routes/userRoute");
+const authRoute = require("./routes/authRoute");
 
 const dbConnection = require("./config/database");
-const ApiError = require("./utils/apiError");
 
 const app = express();
 
@@ -26,11 +27,15 @@ dbConnection();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// middleware for query string to translate price[gt] to price: { gt:  }
+app.set("query parser", "extended");
+
 //  serve on static files
 app.use(express.static(path.join(__dirname, "uploads")));
 
 // mount routes
 app.use("/api/v1/users", userRoute);
+app.use("/api/v1/auth", authRoute);
 
 // * unhandled routes middleware (inside express)
 app.use((req, res, next) => {
